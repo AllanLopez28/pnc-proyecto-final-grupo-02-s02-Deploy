@@ -1,0 +1,34 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/taskme
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      JWT_SECRET: 3PaGQMWew1jLFAJ9N0lwondjJe04PRe1dISJ9BjOcp4=
+    networks:
+      - taskme-net
+
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: taskme
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - taskme-net
+
+volumes:
+  postgres_data:
+
+networks:
+  taskme-net:
